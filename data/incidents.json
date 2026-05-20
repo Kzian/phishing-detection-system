@@ -1,0 +1,42 @@
+[
+  {
+    "incident_id": "BDBB053F",
+    "timestamp": "2026-05-20T07:15:55.856844",
+    "input_type": "email",
+    "threat_score": 0.9755,
+    "severity": "CRITICAL",
+    "prediction": "phishing",
+    "confidence": "97.6%",
+    "actions_taken": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender",
+      "lock_account",
+      "generate_report"
+    ],
+    "raw_input_preview": "URGENT: Your patient portal access will be suspended",
+    "status": "open",
+    "resolved": false
+  },
+  {
+    "incident_id": "DEC48C9C",
+    "timestamp": "2026-05-20T07:19:25.533240+00:00",
+    "input_type": "email",
+    "threat_score": 0.9755,
+    "severity": "CRITICAL",
+    "prediction": "phishing",
+    "confidence": "97.6%",
+    "actions_taken": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender",
+      "lock_account",
+      "generate_report"
+    ],
+    "raw_input_preview": "URGENT: Your patient portal access will be suspended",
+    "status": "open",
+    "resolved": false
+  }
+]

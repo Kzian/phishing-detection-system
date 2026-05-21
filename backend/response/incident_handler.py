@@ -1,14 +1,17 @@
 import os
 import json
 import uuid
+import requests
 from datetime import datetime, timezone
 
+# ─── Timezone-aware UTC ──────────────────────────────────
 def utcnow():
     return datetime.now(timezone.utc).isoformat()
 
-# ─── Paths ───────────────────────────────────────────────
+# ─── Config ──────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 LOG_PATH = os.path.join(BASE_DIR, "data", "incidents.json")
+N8N_WEBHOOK_URL = "http://localhost:5678/webhook/phishing-alert"
 
 
 # ─── Load existing incidents ─────────────────────────────
@@ -26,6 +29,24 @@ def save_incidents(incidents: list):
         json.dump(incidents, f, indent=2)
 
 
+# ─── Notify n8n ──────────────────────────────────────────
+def notify_n8n(incident: dict):
+    try:
+        response = requests.post(N8N_WEBHOOK_URL, json={
+            "incident_id": incident["incident_id"],
+            "severity": incident["severity"],
+            "input_type": incident["input_type"],
+            "threat_score": incident["threat_score"],
+            "prediction": incident["prediction"],
+            "confidence": incident["confidence"],
+            "actions": incident["actions_taken"],
+            "preview": incident["raw_input_preview"]
+        }, timeout=5)
+        return {"n8n_notified": True, "status_code": response.status_code}
+    except Exception as e:
+        return {"n8n_notified": False, "error": str(e)}
+
+
 # ─── Create incident record ──────────────────────────────
 def create_incident(analysis_result: dict, raw_input: str = "") -> dict:
     incident = {
@@ -37,7 +58,7 @@ def create_incident(analysis_result: dict, raw_input: str = "") -> dict:
         "prediction": analysis_result.get("prediction"),
         "confidence": analysis_result.get("confidence"),
         "actions_taken": analysis_result.get("actions", []),
-        "raw_input_preview": raw_input[:100],  # first 100 chars only
+        "raw_input_preview": raw_input[:100],
         "status": "open",
         "resolved": False,
     }
@@ -53,6 +74,10 @@ def handle_incident(analysis_result: dict, raw_input: str = "") -> dict:
     incidents.append(incident)
     save_incidents(incidents)
 
+    # Notify n8n
+    n8n_response = notify_n8n(incident)
+    incident["n8n_response"] = n8n_response
+
     # Execute actions
     actions_taken = []
     for action in incident["actions_taken"]:
@@ -62,6 +87,7 @@ def handle_incident(analysis_result: dict, raw_input: str = "") -> dict:
     incident["execution_log"] = actions_taken
     print(f"\n🚨 Incident {incident['incident_id']} created — Severity: {incident['severity']}")
     print(f"   Actions executed: {len(actions_taken)}")
+    print(f"   n8n notified: {n8n_response.get('n8n_notified')}")
 
     return incident
 
@@ -122,7 +148,7 @@ def execute_action(action: str, incident: dict) -> dict:
     return {"action": action, "status": "unknown", "timestamp": timestamp}
 
 
-# ─── Generate AI incident report ─────────────────────────
+# ─── Generate incident report ────────────────────────────
 def generate_incident_report(incident: dict) -> dict:
     report = f"""
 SECURITY INCIDENT REPORT
@@ -136,9 +162,9 @@ Confidence    : {incident['confidence']}
 
 DETECTION SUMMARY
 ───────────────────────────────────────
-The system detected a {incident['severity']} severity 
+The system detected a {incident['severity']} severity
 {incident['prediction']} attempt via {incident['input_type']}.
-Threat score of {incident['threat_score']} exceeded the 
+Threat score of {incident['threat_score']} exceeded the
 critical threshold, triggering automated response.
 
 INPUT PREVIEW

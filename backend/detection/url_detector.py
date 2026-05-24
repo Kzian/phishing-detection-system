@@ -79,6 +79,7 @@ def predict(features: dict) -> dict:
 
     # Convert to dataframe row
     df = pd.DataFrame([features])
+    df = df[model.feature_names_in_]  # enforce training column order
 
     prob = model.predict_proba(df)[0]
     phishing_prob = round(float(prob[1]), 4)

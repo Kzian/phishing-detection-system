@@ -673,7 +673,11 @@
       "spf_adjustment": 0.0,
       "spf_reason": "spf_unresolvable",
       "base_content_score": 0.997
-    }
+    },
+    "admin_action": "blocked",
+    "admin_note": "review your password",
+    "actioned_by": "eo.phishguard@agentmail.to",
+    "actioned_at": "2026-05-25T13:25:21.819173Z"
   },
   {
     "incident_id": "4D52BB06",
@@ -760,6 +764,43 @@
       "log_incident",
       "flag_message",
       "notify_user"
+    ]
+  },
+  {
+    "incident_id": "2FD101F1",
+    "timestamp": "2026-05-24T18:23:33.276908Z",
+    "metadata": {
+      "raw_url": "google.com",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.64,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "64.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "2F52E414",
+    "timestamp": "2026-05-24T18:24:13.925112Z",
+    "metadata": {
+      "sender_number": "unknown",
+      "recipient": "eo.phishguard@agentmail.to"
+    },
+    "user_email": "eo.phishguard@agentmail.to",
+    "input_type": "sms",
+    "threat_score": 0.029,
+    "severity": "CLEAN",
+    "prediction": "legitimate",
+    "confidence": "97.1%",
+    "actions": [
+      "log_only"
     ]
   }
 ]

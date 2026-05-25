@@ -4,6 +4,7 @@ import Register  from './pages/Register'
 import Login     from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import MyIncidents from './pages/MyIncidents'
+import Admin      from './pages/Admin'
 import NavBar    from './components/NavBar'
 
 // ── Auth context ──────────────────────────────────────────────────────────────
@@ -57,6 +58,9 @@ export default function App() {
             } />
             <Route path="/my-incidents" element={
               <Protected><MyIncidents /></Protected>
+            } />
+            <Route path="/admin" element={
+              <Protected><Admin /></Protected>
             } />
           </Routes>
         </main>

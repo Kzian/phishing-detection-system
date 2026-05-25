@@ -31,6 +31,7 @@ export default function NavBar() {
         <div className="flex items-center gap-1">
           {navLink('/dashboard',    '⚡ Analyze')}
           {navLink('/my-incidents', '📋 My Incidents')}
+          {['it','admin'].includes(user?.role) && navLink('/admin', '🔐 Admin')}
         </div>
       )}
       <div className="flex items-center gap-3">

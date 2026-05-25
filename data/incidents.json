@@ -802,5 +802,316 @@
     "actions": [
       "log_only"
     ]
+  },
+  {
+    "incident_id": "26D7903A",
+    "timestamp": "2026-05-25T19:40:33.208594Z",
+    "metadata": {
+      "raw_url": "facebook.com",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.65,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "65.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "C650226E",
+    "timestamp": "2026-05-25T19:40:47.855830Z",
+    "metadata": {
+      "raw_url": "aper.fpno.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.68,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "68.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "38554161",
+    "timestamp": "2026-05-25T19:40:50.338543Z",
+    "metadata": {
+      "raw_url": "aper.fpno.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.68,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "68.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "E2112682",
+    "timestamp": "2026-05-25T19:40:59.366234Z",
+    "metadata": {
+      "raw_url": "aper.fpno.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.68,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "68.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "B481F5F7",
+    "timestamp": "2026-05-25T19:41:27.649431Z",
+    "metadata": {
+      "raw_url": "paypay.com/transfer/xyz",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.8,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "80.0%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender"
+    ],
+    "admin_action": "cleared",
+    "admin_note": "",
+    "actioned_by": "eo.phishguard@agentmail.to",
+    "actioned_at": "2026-05-25T19:47:55.157682Z"
+  },
+  {
+    "incident_id": "F421AD83",
+    "timestamp": "2026-05-25T20:03:43.919187Z",
+    "metadata": {
+      "raw_url": "futo.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.72,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "72.0%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender"
+    ]
+  },
+  {
+    "incident_id": "ECE8ACEF",
+    "timestamp": "2026-05-25T20:04:10.681368Z",
+    "metadata": {
+      "raw_url": "aun.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.71,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "71.0%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender"
+    ]
+  },
+  {
+    "incident_id": "952BA235",
+    "timestamp": "2026-05-25T20:04:43.682999Z",
+    "metadata": {
+      "raw_url": "paypal.com.xyz/verify",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.61,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "61.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "03CCF337",
+    "timestamp": "2026-05-25T20:05:08.256283Z",
+    "metadata": {
+      "raw_url": "aun.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.71,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "71.0%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender"
+    ]
+  },
+  {
+    "incident_id": "8D17EBAE",
+    "timestamp": "2026-05-25T20:05:13.886841Z",
+    "metadata": {
+      "raw_url": "aun.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.71,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "71.0%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender"
+    ]
+  },
+  {
+    "incident_id": "643BE9EC",
+    "timestamp": "2026-05-25T20:05:25.456259Z",
+    "metadata": {
+      "raw_url": "aun.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.71,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "71.0%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender"
+    ]
+  },
+  {
+    "incident_id": "1DDDCE3A",
+    "timestamp": "2026-05-25T20:05:33.977584Z",
+    "metadata": {
+      "raw_url": "unn.edu.ng",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.71,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "71.0%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender"
+    ]
+  },
+  {
+    "incident_id": "41ED9AC3",
+    "timestamp": "2026-05-25T20:05:48.584444Z",
+    "metadata": {
+      "raw_url": "facebook.com",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": null,
+    "input_type": "url",
+    "threat_score": 0.66,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "66.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "5C2D28BB",
+    "timestamp": "2026-05-25T20:27:46.779926Z",
+    "metadata": {
+      "raw_url": "paypal.com.xyz/verify",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": "cmo.phishguard@agentmail.to",
+    "input_type": "url",
+    "threat_score": 0.61,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "61.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
+  },
+  {
+    "incident_id": "A69A362F",
+    "timestamp": "2026-05-25T20:27:49.389931Z",
+    "metadata": {
+      "raw_url": "facebook.com",
+      "hostname": "",
+      "is_https": 0
+    },
+    "user_email": "fy.phishguard@agentmail.to",
+    "input_type": "url",
+    "threat_score": 0.66,
+    "severity": "MEDIUM",
+    "prediction": "phishing",
+    "confidence": "66.0%",
+    "actions": [
+      "log_incident",
+      "flag_message",
+      "notify_user"
+    ]
   }
 ]

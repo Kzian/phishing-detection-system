@@ -41,6 +41,8 @@ export default function MyIncidents() {
   const [loading,   setLoading]   = useState(true)
   const [view,      setView]      = useState('mine') // mine | all
 
+  const isAdmin = ['it','admin'].includes(user?.role)
+
   useEffect(() => {
     setLoading(true)
     const fetch = view === 'mine' ? getMyIncidents() : getIncidents()
@@ -58,7 +60,7 @@ export default function MyIncidents() {
         </div>
         {/* View toggle */}
         <div className="flex gap-1 bg-gray-800 p-1 rounded-lg">
-          {[['mine','My Incidents'],['all','All Incidents']].map(([v, label]) => (
+          {[['mine','My Incidents'], ...(isAdmin ? [['all','All Incidents']] : [])].map(([v, label]) => (
             <button key={v} onClick={() => { setView(v); setSelected(null) }}
               className={`px-3 py-1.5 rounded-md text-sm transition ${
                 view === v ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'

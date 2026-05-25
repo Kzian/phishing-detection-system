@@ -285,24 +285,30 @@ def health_check():
 
 
 @app.post("/analyze/url", tags=["Detection"])
-def analyze_url_endpoint(request: URLRequest):
+def analyze_url_endpoint(
+    request: URLRequest,
+    current_user: User = Depends(get_current_user),
+):
     """109 features — 97 lexical + 12 network (RDAP, ipinfo.io, DNS)."""
     try:
         features = build_full_feature_vector(request.url)
         result   = analyze_url(features)
         parsed   = urlparse(request.url)
-        record   = _build_response(result, {
+        record = _build_response(result, {
             "raw_url":  request.url,
             "hostname": parsed.hostname or "",
-            "is_https": int(parsed.scheme == "https"),
-        })
+             "is_https": int(parsed.scheme == "https"),
+}, user_email=current_user.email)
         return record
     except Exception as e:
         raise HTTPException(500, str(e))
 
 
 @app.post("/analyze/email", tags=["Detection"])
-def analyze_email_endpoint(request: EmailRequest):
+def analyze_email_endpoint(
+    request: EmailRequest,
+    current_user: User = Depends(get_current_user),
+):
     """
     3-layer email analysis: NLP content + sender domain reputation + SPF check.
     Sender emails from .gov.ng / .edu.ng / .org.ng receive trust adjustment.
@@ -312,21 +318,24 @@ def analyze_email_endpoint(request: EmailRequest):
         record = _build_response(result, {
             "sender":    request.sender or "unknown",
             "subject":   request.subject,
-            "recipient": request.recipient or "unknown",
-        }, user_email=request.recipient)
+            "recipient": request.recipient or current_user.email,
+        }, user_email=request.recipient or current_user.email)
         return record
     except Exception as e:
         raise HTTPException(500, str(e))
 
 
 @app.post("/analyze/sms", tags=["Detection"])
-def analyze_sms_endpoint(request: SMSRequest):
+def analyze_sms_endpoint(
+    request: SMSRequest,
+    current_user: User = Depends(get_current_user),
+):
     try:
         result = analyze_sms(request.message)
         record = _build_response(result, {
             "sender_number": request.sender_number or "unknown",
-            "recipient":     request.recipient or "unknown",
-        }, user_email=request.recipient)
+            "recipient":     request.recipient or current_user.email,
+        }, user_email=request.recipient or current_user.email)
         return record
     except Exception as e:
         raise HTTPException(500, str(e))
@@ -336,11 +345,18 @@ def analyze_sms_endpoint(request: SMSRequest):
 
 @app.get("/incidents", tags=["Incidents"])
 def get_all_incidents(
-    severity:   Optional[str] = None,
-    input_type: Optional[str] = None,
-    limit: int = 50,
+    severity:     Optional[str] = None,
+    input_type:   Optional[str] = None,
+    limit:        int = 50,
+    current_user: User = Depends(get_current_user),
 ):
     incidents = _load_incidents()
+    if current_user.role not in ("it", "admin"):
+        incidents = [
+            i for i in incidents
+            if i.get("user_email") == current_user.email
+            or i.get("metadata", {}).get("recipient") == current_user.email
+        ]
     if severity:   incidents = [i for i in incidents if i.get("severity")   == severity.upper()]
     if input_type: incidents = [i for i in incidents if i.get("input_type") == input_type.lower()]
     incidents = sorted(incidents, key=lambda x: x.get("timestamp",""), reverse=True)
@@ -414,10 +430,10 @@ def admin_stats(current_user: User = Depends(_require_admin)):
     users     = db.query(User).all()
     db.close()
 
-    staff_map = {u.email: {"name": u.name, "role": u.role,
-                           "department": u.department, "count": 0,
-                           "critical": 0, "highest": "CLEAN"}
-                 for u in users}
+    staff_map = {u.email: {"name": u.name, "role": u.role, "email": u.email,
+                       "department": u.department, "count": 0,
+                       "critical": 0, "highest": "CLEAN"}
+             for u in users}
 
     severity_rank = {"CLEAN": 0, "LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
 
@@ -462,18 +478,33 @@ def admin_action(
     raise HTTPException(404, f"Incident {incident_id} not found.")
 
 
-@app.get("/incidents/{incident_id}/report", tags=["Admin"])
-def incident_report(
-    incident_id: str,
-    current_user: User = Depends(_require_admin),
-):
-    """Generate a plain-text incident report for download."""
+@app.get("/incidents/{incident_id}/report", tags=["Admin"],
+         response_model=None)
+def incident_report(incident_id: str, token: Optional[str] = None):
+    """Generate incident report — accepts JWT as query param for browser downloads."""
+    from backend.api.auth import SECRET_KEY, ALGORITHM
+    from jose import jwt, JWTError
+    from backend.models.user import Session as DBSession
+
+    if not token:
+        raise HTTPException(401, "Not authenticated")
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email   = payload.get("sub")
+        db      = DBSession()
+        current_user = db.query(User).filter(User.email == email).first()
+        db.close()
+    except JWTError:
+        raise HTTPException(401, "Invalid token")
+
+    if not current_user or current_user.role not in ("it", "admin"):
+        raise HTTPException(403, "Admin access required")
+
     for inc in _load_incidents():
         if inc.get("incident_id") == incident_id.upper():
-            meta     = inc.get("metadata", {})
-            actions  = ", ".join(inc.get("actions", []))
-            report   = f"""
-PHISHGUARD AI — INCIDENT REPORT
+            meta    = inc.get("metadata", {})
+            actions = ", ".join(inc.get("actions", []))
+            report  = f"""PHISHGUARD AI — INCIDENT REPORT
 ================================
 Incident ID   : {inc.get('incident_id')}
 Date / Time   : {inc.get('timestamp','').replace('T',' ').replace('Z',' UTC')}
@@ -495,7 +526,7 @@ Raw URL       : {meta.get('raw_url', 'N/A')}
 Recipient     : {meta.get('recipient', 'N/A')}
 
 AUTOMATED ACTIONS TAKEN
-------------------------
+-----------------------
 {actions}
 
 ADMIN REVIEW
@@ -510,13 +541,14 @@ RECOMMENDATION
 {"Block sender domain and notify affected staff immediately." if inc.get('severity') in ("CRITICAL","HIGH") else "Monitor for repeated activity from this source."}
 
 --
-PhishGuard AI v2.0 | MSc Cybersecurity Research | FUTO
-""".strip()
+PhishGuard AI v2.0 | MSc Cybersecurity Research | FUTO""".strip()
+
             from fastapi.responses import PlainTextResponse
             return PlainTextResponse(
                 content=report,
                 headers={
-                    "Content-Disposition": f"attachment; filename=incident_{incident_id}.txt"
+                    "Content-Disposition":
+                        f"attachment; filename=incident_{incident_id}.txt"
                 }
             )
     raise HTTPException(404, f"Incident {incident_id} not found.")

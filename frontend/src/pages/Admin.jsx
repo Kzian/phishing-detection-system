@@ -226,7 +226,10 @@ export default function Admin() {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-xs text-gray-400 max-w-32 truncate">
-                      {inc.user_email || inc.metadata?.recipient || '—'}
+                      {inc.user_email
+                        ? (stats?.staff_breakdown?.find(s =>
+                            s.email === inc.user_email)?.name || inc.user_email)
+                        : inc.metadata?.recipient || '—'}
                     </td>
                     <td className="px-4 py-3">
                       {inc.admin_action ? (

@@ -1144,6 +1144,10 @@
       "spf_adjustment": -0.05,
       "spf_reason": "spf_present",
       "base_content_score": 0.9699
-    }
+    },
+    "admin_action": "cleared",
+    "admin_note": "",
+    "actioned_by": "eo.phishguard@agentmail.to",
+    "actioned_at": "2026-05-26T08:29:31.996693Z"
   }
 ]

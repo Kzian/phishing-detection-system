@@ -455,26 +455,53 @@ def admin_stats(current_user: User = Depends(_require_admin)):
     }
 
 
-@app.patch("/incidents/{incident_id}/action", tags=["Admin"])
+@app.patch("/incidents/{incident_id}/action", tags=["Admin"],
+           response_model=None)
 def admin_action(
     incident_id: str,
     payload: dict,
     current_user: User = Depends(_require_admin),
 ):
-    """
-    Admin takes manual action on an incident.
-    payload: { "action": "blocked" | "cleared" | "escalated", "note": "..." }
-    """
+    action = payload.get("action")
     incidents = _load_incidents()
+
     for inc in incidents:
         if inc.get("incident_id") == incident_id.upper():
-            inc["admin_action"]  = payload.get("action")
-            inc["admin_note"]    = payload.get("note", "")
-            inc["actioned_by"]   = current_user.email
-            inc["actioned_at"]   = datetime.utcnow().isoformat() + "Z"
+            inc["admin_action"] = action
+            inc["admin_note"]   = payload.get("note", "")
+            inc["actioned_by"]  = current_user.email
+            inc["actioned_at"]  = datetime.utcnow().isoformat() + "Z"
             with open(INCIDENTS_PATH, "w") as f:
                 json.dump(incidents, f, indent=2)
-            return {"status": "updated", "incident_id": incident_id, **payload}
+
+            # Block → suspend the linked staff account
+            staff_email = inc.get("user_email") or \
+                          inc.get("metadata", {}).get("recipient")
+
+            if staff_email and staff_email != current_user.email:
+                db   = next(get_db())
+                user = db.query(User).filter(User.email == staff_email).first()
+
+                if user:
+                    if action == "blocked":
+                        user.is_suspended = True
+                        db.commit()
+                        print(f"🔒 Admin blocked {user.name} ({staff_email})")
+
+                    elif action == "cleared":
+                        user.is_suspended = False
+                        db.commit()
+                        print(f"✅ Admin restored {user.name} ({staff_email})")
+
+                db.close()
+
+            return {
+                "status":      "updated",
+                "incident_id": incident_id,
+                "action":      action,
+                "staff_email": staff_email or "unattributed",
+            }
+
     raise HTTPException(404, f"Incident {incident_id} not found.")
 
 
@@ -606,7 +633,7 @@ async def agentmail_webhook(payload: dict):
         severity = result.get("severity", "CLEAN")
 
         # Auto-suspend staff account on CRITICAL — automated monitoring only
-        if severity == "CRITICAL" and user:
+        if severity in ("CRITICAL", "HIGH") and user:
             db = next(get_db())
             target = db.query(User).filter(User.email == staff_email).first()
             if target:

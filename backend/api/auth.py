@@ -1,6 +1,7 @@
 import os
 from datetime import datetime, timedelta
 from typing import Optional
+from backend.models import user
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -83,6 +84,11 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
     user = db.query(User).filter(User.email == form.username.lower()).first()
     if not user or not _verify(form.password, user.hashed_password):
         raise HTTPException(401, "Incorrect email or password")
+    if user.is_suspended:
+        raise HTTPException(
+            403,
+            "Your account has been suspended pending security review. Contact IT: eo.phishguard@agentmail.to"
+        )
     token = _create_token({"sub": user.email, "role": user.role})
     return TokenOut(access_token=token, token_type="bearer", user=user)
 

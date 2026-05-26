@@ -552,3 +552,98 @@ PhishGuard AI v2.0 | MSc Cybersecurity Research | FUTO""".strip()
                 }
             )
     raise HTTPException(404, f"Incident {incident_id} not found.")
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# AGENTMAIL WEBHOOK
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@app.post("/webhook/agentmail", tags=["Webhooks"], response_model=None)
+async def agentmail_webhook(payload: dict):
+    """
+    Receives email events from AgentMail.
+    Extracts email content, identifies staff recipient,
+    runs 3-layer analysis, auto-suspends on CRITICAL.
+    """
+    try:
+        # Only process message.received events
+        if payload.get("event_type") != "message.received":
+            return {"status": "ignored", "reason": "not a message event"}
+
+        msg       = payload.get("message", {})
+        subject   = msg.get("subject", "")
+        body      = msg.get("text", "") or msg.get("extracted_text", "")
+        sender    = msg.get("from", "") or msg.get("from_", "")
+        inbox_id  = msg.get("inbox_id", "")  # which staff inbox received it
+
+        # Extract plain email from "Name <email>" format
+        import re
+        sender_email = ""
+        match = re.search(r'<([^>]+)>', sender)
+        if match:
+            sender_email = match.group(1)
+        else:
+            sender_email = sender.strip()
+
+        # Find registered staff member by inbox_id
+        db   = next(get_db())
+        user = db.query(User).filter(User.email == inbox_id).first()
+        db.close()
+
+        staff_email = user.email if user else inbox_id
+        staff_name  = user.name  if user else "Unknown"
+
+        # Run 3-layer email analysis
+        result = analyze_email_enhanced(subject, body, sender_email)
+
+        # Build incident record
+        record = _build_response(result, {
+            "sender":    sender_email,
+            "subject":   subject,
+            "recipient": staff_email,
+            "channel":   "agentmail_auto",
+        }, user_email=staff_email)
+
+        severity = result.get("severity", "CLEAN")
+
+        # Auto-suspend staff account on CRITICAL — automated monitoring only
+        if severity == "CRITICAL" and user:
+            db = next(get_db())
+            target = db.query(User).filter(User.email == staff_email).first()
+            if target:
+                target.is_suspended = True
+                db.commit()
+                print(f"🔒 Auto-suspended {staff_name} ({staff_email}) — CRITICAL threat")
+            db.close()
+
+        # Notify n8n for downstream alerting
+        _notify_n8n({
+            **record,
+            "staff_name":  staff_name,
+            "staff_email": staff_email,
+            "auto_scanned": True,
+        })
+
+        print(f"✅ AgentMail: {subject[:40]} | {severity} | {staff_email}")
+        return {"status": "processed", "incident_id": record["incident_id"],
+                "severity": severity, "staff": staff_email}
+
+    except Exception as e:
+        print(f"❌ AgentMail webhook error: {e}")
+        raise HTTPException(500, str(e))
+
+
+@app.patch("/admin/users/{email}/restore", tags=["Admin"], response_model=None)
+def restore_user(
+    email: str,
+    current_user: User = Depends(_require_admin),
+):
+    """Admin restores a suspended staff account."""
+    db   = next(get_db())
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        db.close()
+        raise HTTPException(404, "User not found")
+    user.is_suspended = False
+    db.commit()
+    db.close()
+    return {"status": "restored", "email": email, "name": user.name}

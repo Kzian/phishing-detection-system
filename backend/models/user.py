@@ -20,6 +20,7 @@ class User(Base):
     department      = Column(String, nullable=True)
     hashed_password = Column(String, nullable=False)
     created_at      = Column(DateTime, default=datetime.utcnow)
+    is_suspended = Column(Integer, default=0)  # 0=active, 1=suspended
 
 def init_db():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)

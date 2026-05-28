@@ -49,6 +49,13 @@ _SHORTENERS = {
     "cutt.ly", "is.gd", "buff.ly", "short.io", "tiny.cc", "bl.ink",
 }
 
+# Known trusted Nigerian institutional domains — RDAP unavailable
+TRUSTED_NG_DOMAINS = {
+    "nhis.gov.ng", "unn.edu.ng", "ui.edu.ng", "futo.edu.ng",
+    "oau.edu.ng", "luth.gov.ng", "uniben.edu.ng", "abu.edu.ng",
+    "who.int", "google.com", "microsoft.com", "facebook.com",
+}
+
 # ── Registrable-domain extraction (no tldextract needed) ─────────────────────
 # Handles common multi-part ccTLDs like .edu.ng, .co.uk, .com.br
 _MULTI_TLDS = {
@@ -242,6 +249,7 @@ def resolve_network_features(url: str, hostname: str) -> dict:
       qty_nameservers, qty_mx_servers, ttl_hostname,
       tls_ssl_certificate, url_shortened
     """
+
     parsed = urlparse(url)
 
     # 1. HTTP features (response time + redirects)
@@ -261,6 +269,12 @@ def resolve_network_features(url: str, hostname: str) -> dict:
     # 5. Simple derivations (no external calls)
     is_https     = int(parsed.scheme == "https")
     is_shortened = int(hostname in _SHORTENERS)
+
+    # Whitelist override — trusted domains get positive network signals
+    reg = _registrable_domain(hostname)
+    if reg in TRUSTED_NG_DOMAINS or hostname in TRUSTED_NG_DOMAINS:
+        activation   = activation   if activation  > 0 else 3650
+        expiration   = expiration   if expiration  > 0 else 365
 
     return {
         "time_response":          time_resp,

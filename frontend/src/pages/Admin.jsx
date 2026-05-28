@@ -240,10 +240,18 @@ export default function Admin() {
                             ? 'bg-red-950 text-red-400 border-red-800'
                             : 'bg-yellow-950 text-yellow-400 border-yellow-800'
                         }`}>
-                          {inc.admin_action}
+                      {inc.admin_action}
                         </span>
                       ) : (
-                        <span className="text-xs text-gray-600">pending</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full border ${
+                          ['HIGH','CRITICAL'].includes(inc.severity)
+                            ? 'bg-orange-950 text-orange-400 border-orange-800'
+                            : 'bg-gray-800 text-gray-500 border-gray-700'
+                        }`}>
+                          {['HIGH','CRITICAL'].includes(inc.severity)
+                            ? '🔒 auto-suspended'
+                            : 'pending review'}
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-xs text-gray-500">

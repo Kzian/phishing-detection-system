@@ -220,7 +220,11 @@
       "block_sender",
       "lock_account",
       "generate_report"
-    ]
+    ],
+    "admin_action": "cleared",
+    "admin_note": "",
+    "actioned_by": "eo.phishguard@agentmail.to",
+    "actioned_at": "2026-05-26T08:44:48.762211Z"
   },
   {
     "incident_id": "3D47666D",
@@ -1149,5 +1153,37 @@
     "admin_note": "",
     "actioned_by": "eo.phishguard@agentmail.to",
     "actioned_at": "2026-05-26T08:29:31.996693Z"
+  },
+  {
+    "incident_id": "C337C55F",
+    "timestamp": "2026-05-26T08:31:22.878361Z",
+    "metadata": {
+      "sender": "cassia.anwar@aun.edu.ng",
+      "subject": "Fwd: URGENT: Your NHIS hospital account will be suspended",
+      "recipient": "cmo.phishguard@agentmail.to",
+      "channel": "agentmail_auto"
+    },
+    "user_email": "cmo.phishguard@agentmail.to",
+    "input_type": "email",
+    "threat_score": 0.7377,
+    "severity": "HIGH",
+    "prediction": "phishing",
+    "confidence": "73.8%",
+    "actions": [
+      "log_incident",
+      "quarantine",
+      "notify_admin",
+      "block_sender",
+      "lock_account",
+      "generate_report"
+    ],
+    "subject": "Fwd: URGENT: Your NHIS hospital account will be suspended",
+    "sender_analysis": {
+      "domain_adjustment": -0.15,
+      "domain_reason": "trusted_ng_tld:.edu.ng",
+      "spf_adjustment": -0.05,
+      "spf_reason": "spf_present",
+      "base_content_score": 0.9377
+    }
   }
 ]

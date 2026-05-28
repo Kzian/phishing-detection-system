@@ -1,0 +1,379 @@
+{
+  "generated_at": "2026-05-27T17:27:01.117097",
+  "summary": {
+    "url_accuracy": "75.0%",
+    "email_accuracy": "80.0%",
+    "sms_accuracy": "60.0%",
+    "overall_accuracy": "72.5%",
+    "url_fpr": "50.0%",
+    "email_fpr": "20.0%",
+    "sms_fpr": "60.0%",
+    "mean_response_ms": "108.1"
+  },
+  "url_results": [
+    {
+      "input": "http://paypal-secure-login.xyz/verify",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "81.0%",
+      "correct": true,
+      "time_ms": "196.3ms"
+    },
+    {
+      "input": "http://nhis-account-verify.tk/login",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "83.0%",
+      "correct": true,
+      "time_ms": "199.1ms"
+    },
+    {
+      "input": "http://amazon-prize-winner.ml/claim",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "82.0%",
+      "correct": true,
+      "time_ms": "172.2ms"
+    },
+    {
+      "input": "http://bankofafrica-secure.cf/update",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "81.0%",
+      "correct": true,
+      "time_ms": "146.8ms"
+    },
+    {
+      "input": "http://apple-id-suspended.xyz/unlock",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "82.0%",
+      "correct": true,
+      "time_ms": "185.7ms"
+    },
+    {
+      "input": "http://microsoft-alert-security.tk/verify",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "82.0%",
+      "correct": true,
+      "time_ms": "170.8ms"
+    },
+    {
+      "input": "http://gmail-account-recovery.ml/reset",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "81.0%",
+      "correct": true,
+      "time_ms": "234.5ms"
+    },
+    {
+      "input": "http://hospital-staff-verify.xyz/login",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "81.0%",
+      "correct": true,
+      "time_ms": "245.0ms"
+    },
+    {
+      "input": "http://nhis-gov-ng-verify.tk/staff",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "82.0%",
+      "correct": true,
+      "time_ms": "161.2ms"
+    },
+    {
+      "input": "http://secure-banking-update.cf/confirm",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "82.0%",
+      "correct": true,
+      "time_ms": "244.2ms"
+    },
+    {
+      "input": "https://www.google.com",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "49.0%",
+      "correct": true,
+      "time_ms": "222.7ms"
+    },
+    {
+      "input": "https://web.facebook.com",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "47.0%",
+      "correct": true,
+      "time_ms": "205.5ms"
+    },
+    {
+      "input": "https://www.microsoft.com",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "45.0%",
+      "correct": true,
+      "time_ms": "295.0ms"
+    },
+    {
+      "input": "https://unn.edu.ng",
+      "expected": "legitimate",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "72.0%",
+      "correct": false,
+      "time_ms": "336.1ms"
+    },
+    {
+      "input": "https://www.ui.edu.ng",
+      "expected": "legitimate",
+      "predicted": "phishing",
+      "severity": "MEDIUM",
+      "score": "62.0%",
+      "correct": false,
+      "time_ms": "266.4ms"
+    },
+    {
+      "input": "https://nhis.gov.ng",
+      "expected": "legitimate",
+      "predicted": "phishing",
+      "severity": "MEDIUM",
+      "score": "64.0%",
+      "correct": false,
+      "time_ms": "268.6ms"
+    },
+    {
+      "input": "https://www.futo.edu.ng",
+      "expected": "legitimate",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "71.0%",
+      "correct": false,
+      "time_ms": "137.3ms"
+    },
+    {
+      "input": "https://www.firstbanknigeria.com",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "46.0%",
+      "correct": true,
+      "time_ms": "162.0ms"
+    },
+    {
+      "input": "https://www.gtbank.com",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "45.0%",
+      "correct": true,
+      "time_ms": "188.1ms"
+    },
+    {
+      "input": "https://www.who.int",
+      "expected": "legitimate",
+      "predicted": "phishing",
+      "severity": "MEDIUM",
+      "score": "50.0%",
+      "correct": false,
+      "time_ms": "180.0ms"
+    }
+  ],
+  "email_results": [
+    {
+      "input": "URGENT: Your NHIS account will be suspended",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "CRITICAL",
+      "score": "99.3%",
+      "correct": true,
+      "time_ms": "12.1ms"
+    },
+    {
+      "input": "Your hospital account password has expired",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "HIGH",
+      "score": "83.3%",
+      "correct": true,
+      "time_ms": "7.5ms"
+    },
+    {
+      "input": "FREE COVID-19 Palliative \u2014 Claim Now",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "CRITICAL",
+      "score": "92.8%",
+      "correct": true,
+      "time_ms": "6.4ms"
+    },
+    {
+      "input": "Verify your GTBank account immediately",
+      "expected": "phishing",
+      "predicted": "phishing",
+      "severity": "CRITICAL",
+      "score": "99.1%",
+      "correct": true,
+      "time_ms": "6.9ms"
+    },
+    {
+      "input": "Your NIN has been deactivated",
+      "expected": "phishing",
+      "predicted": "legitimate",
+      "severity": "CLEAN",
+      "score": "4.8%",
+      "correct": false,
+      "time_ms": "6.7ms"
+    },
+    {
+      "input": "Staff Meeting \u2014 Friday 10am",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "CLEAN",
+      "score": "6.5%",
+      "correct": true,
+      "time_ms": "5.7ms"
+    },
+    {
+      "input": "Patient Appointment Confirmation",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "33.2%",
+      "correct": true,
+      "time_ms": "8.9ms"
+    },
+    {
+      "input": "NHIS Monthly Bulletin \u2014 May 2026",
+      "expected": "legitimate",
+      "predicted": "phishing",
+      "severity": "MEDIUM",
+      "score": "59.6%",
+      "correct": false,
+      "time_ms": "6.3ms"
+    },
+    {
+      "input": "Payslip for April 2026",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "CLEAN",
+      "score": "11.8%",
+      "correct": true,
+      "time_ms": "8.0ms"
+    },
+    {
+      "input": "Annual Leave Approval",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "30.5%",
+      "correct": true,
+      "time_ms": "6.2ms"
+    }
+  ],
+  "sms_results": [
+    {
+      "input": "URGENT: Your BVN has been deactivated. Call 0",
+      "expected": "phishing",
+      "predicted": "smishing",
+      "severity": "CRITICAL",
+      "score": "90.6%",
+      "correct": true,
+      "time_ms": "5.2ms"
+    },
+    {
+      "input": "You have won N500,000 in the MTN promo. Claim",
+      "expected": "phishing",
+      "predicted": "smishing",
+      "severity": "CRITICAL",
+      "score": "98.3%",
+      "correct": true,
+      "time_ms": "4.0ms"
+    },
+    {
+      "input": "Your GTBank account is blocked. Unblock now: ",
+      "expected": "phishing",
+      "predicted": "smishing",
+      "severity": "MEDIUM",
+      "score": "61.2%",
+      "correct": true,
+      "time_ms": "3.8ms"
+    },
+    {
+      "input": "FG Palliative: You qualify for N30,000 relief",
+      "expected": "phishing",
+      "predicted": "smishing",
+      "severity": "CRITICAL",
+      "score": "99.0%",
+      "correct": true,
+      "time_ms": "3.5ms"
+    },
+    {
+      "input": "NHIS: Your hospital access card expires today",
+      "expected": "phishing",
+      "predicted": "legitimate",
+      "severity": "CLEAN",
+      "score": "28.6%",
+      "correct": false,
+      "time_ms": "2.5ms"
+    },
+    {
+      "input": "Your OTP for GTBank login is 482910. Valid fo",
+      "expected": "legitimate",
+      "predicted": "smishing",
+      "severity": "MEDIUM",
+      "score": "57.4%",
+      "correct": false,
+      "time_ms": "3.6ms"
+    },
+    {
+      "input": "Reminder: Your appointment with Dr. Okafor is",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "LOW",
+      "score": "31.0%",
+      "correct": true,
+      "time_ms": "2.6ms"
+    },
+    {
+      "input": "Your MTN airtime recharge of N1000 was succes",
+      "expected": "legitimate",
+      "predicted": "smishing",
+      "severity": "CRITICAL",
+      "score": "99.3%",
+      "correct": false,
+      "time_ms": "2.8ms"
+    },
+    {
+      "input": "LASG: Your vehicle particulars renewal is due",
+      "expected": "legitimate",
+      "predicted": "legitimate",
+      "severity": "CLEAN",
+      "score": "8.5%",
+      "correct": true,
+      "time_ms": "2.5ms"
+    },
+    {
+      "input": "Your UBA transfer of N5,000 to JOHN DOE was s",
+      "expected": "legitimate",
+      "predicted": "smishing",
+      "severity": "CRITICAL",
+      "score": "94.6%",
+      "correct": false,
+      "time_ms": "2.8ms"
+    }
+  ]
+}

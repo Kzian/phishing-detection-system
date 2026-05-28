@@ -330,8 +330,9 @@ as the analyst is the initiator, not the victim.
 ## 👤 Author
 
 **Cyb3rry (Cassia Anwar)**
+Lecturer, Computer Science — Federal Polytechnic Nekede, Owerri (FPNO)
 MSc Cybersecurity Candidate — FUTO
-Lecturer | Cybersecurity Researcher | AI Enthusiast
+Cybersecurity Researcher | AI Enthusiast
 GitHub: [@Kzian](https://github.com/Kzian)
 
 ---

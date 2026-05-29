@@ -1,0 +1,33 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Data — raw datasets are large, not needed in container
+data/raw/
+data/processed/
+notebooks/
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+
+# Git
+.git/
+.gitignore
+
+# Environment
+.env
+
+# Test files
+tests/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+*.log

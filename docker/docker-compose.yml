@@ -1,0 +1,77 @@
+# PhishGuard AI — Docker Compose
+# Usage: docker-compose up --build
+# Dashboard:  http://localhost:3000
+# API docs:   http://localhost:8000/docs
+# n8n:        http://localhost:5678
+
+version: "3.9"
+
+services:
+
+  # ── FastAPI Backend ─────────────────────────────────────
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    container_name: phishguard-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist incidents and database outside the container
+      - phishguard-data:/app/data
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-phishguard-change-in-production}
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://n8n:5678/webhook/phishguard}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - phishguard-net
+
+  # ── React Frontend ──────────────────────────────────────
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    container_name: phishguard-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - phishguard-net
+
+  # ── n8n Workflow Engine ─────────────────────────────────
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: phishguard-n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n-data:/home/node/.n8n
+    environment:
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678
+      - GENERIC_TIMEZONE=Africa/Lagos
+    restart: unless-stopped
+    networks:
+      - phishguard-net
+
+# ── Volumes ─────────────────────────────────────────────
+volumes:
+  phishguard-data:
+    driver: local
+  n8n-data:
+    driver: local
+
+# ── Network ─────────────────────────────────────────────
+networks:
+  phishguard-net:
+    driver: bridge

@@ -293,7 +293,7 @@ Dashboard-initiated analysis never triggers auto-suspend.
 - [x] Phase 7 — React dashboard + Hospital staff portal (4 roles)
 - [x] Phase 7b — AgentMail webhook + auto-suspend on HIGH/CRITICAL
 - [x] Phase 8 — Formal evaluation (40 samples, ChatGPT comparison)
-- [ ] Phase 9 — Docker containerisation
+- [x] Phase 9 — Docker containerisation
 - [ ] Phase 10 — MSc thesis writing
 
 ---

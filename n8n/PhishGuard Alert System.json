@@ -1,0 +1,146 @@
+{
+  "name": "PhishGuard Alert System",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "phishguard",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d9058438-7207-4d8f-bef5-6a15615db33c",
+      "name": "Webhook",
+      "webhookId": "2d193cfc-c90d-44fb-b164-dc67a504d62d"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "72f6eb39-8c0f-4d04-a98f-fefbdd05b606",
+              "leftValue": "={{ $json.body.severity }}",
+              "rightValue": "CRITICAL",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "10bdbd0b-dffc-4ad9-849a-c7709609964f",
+              "leftValue": "={{ $json.body.severity }}",
+              "rightValue": "HIGH",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7d7087ea-c14b-4e3d-8bac-1f032da5ddfa",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        416,
+        96
+      ],
+      "id": "065d4537-47b3-4885-9900-cf1e2227f767",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "sendTo": "eo.phishguard@agentmail.to",
+        "subject": "=⚠️ PhishGuard: {{ $json.body.severity }} threat — {{ $json.body.incident_id }}",
+        "emailType": "text",
+        "message": "=Incident ID  : {{ $json.body.incident_id }} Severity     : {{ $json.body.severity }} Score        : {{ $json.body.confidence }} Channel      : {{ $json.body.input_type }} Staff        : {{ $json.body.user_email }} Time         : {{ $json.body.timestamp }}  Review at: http://localhost:3000/admin",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -96
+      ],
+      "id": "a72a383f-a40e-4109-bc9c-be20b7f97578",
+      "name": "Send a message",
+      "webhookId": "2b3b1cfb-ac3b-4a2b-9339-f7571a61cf70",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "CRolgBDhghVX1OBX",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "021f8924-896e-41a9-8067-9aea67456265",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3c3a60ed4c251536a488650989e5874f559b456ff5d18795de0099b32cad819d"
+  },
+  "id": "hLefsrlSjOIvdPv5",
+  "tags": []
+}
